@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.holy.wcoa.dao.RemindMapper">
+
+    <resultMap id="remindResultMap" type="org.holy.wcoa.entity.RemindEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="remind_date" property="remindDate" jdbcType="DATE"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="status" property="status" javaType="org.holy.wcoa.enums.RemindStatusEnum"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, remind_date, remark, status
+    </sql>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="org.holy.wcoa.entity.RemindEntity">
+        INSERT INTO
+        remind
+        (name,remind_date,remark)
+        VALUES
+        (#{name}, #{remindDate}, #{remark})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM
+        remind
+        WHERE
+        id =#{id}
+    </delete>
+
+    <update id="update" parameterType="org.holy.wcoa.entity.RemindEntity">
+        UPDATE
+        remind
+        SET
+        name = #{name}
+        remind_date = #{remindDate}
+        remark = #{remark}
+        status = #{status}
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="findOne" parameterType="Integer" resultMap="remindResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM remind
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="remindResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM remind
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT
+        COUNT(*)
+        FROM remind
+    </select>
+
+</mapper>
